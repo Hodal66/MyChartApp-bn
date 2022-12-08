@@ -8,6 +8,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import authRoutes from "./routes/auth.js";
+import UserRouter from "./routes/users.js";
+import postRoutes from "./routes/posts.js";
+
 import { register } from "./controllers/auth.js";
 
 //CONFIGURATIONS
@@ -37,12 +41,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 // MiddleWare ROUTES WITH FILES
 
-//welCome Message
+//remember that for professionalism all routes must be exported as default while controllers are not & middleware
 
-app.get("/home", function (req, res) {
-  res.send("Welcome to new Home Authomated House");
-});
 app.post("/auth/register", upload.single("picture"), register);
+
+app.use("/auth", authRoutes);
+app.use("/users", UserRouter);
+app.use("/posts", postRoutes);
+
 //MONGOOSE SETUP
 
 const PORT = process.env.PORT || 6001;
@@ -52,7 +58,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server port ${PORT} is connected`));
+    app.listen(PORT, () => console.log(`Server port ${PORT} is connected `));
   })
   .catch((error) =>
     console.log(`You have an error : ${error} can not connect!`)
