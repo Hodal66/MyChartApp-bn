@@ -11,7 +11,9 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import UserRouter from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
-
+import User from "./models/User.js";
+import Post from "./models/Post.js";
+import { users, posts } from "./data/index.js";
 import { register } from "./controllers/auth.js";
 
 //CONFIGURATIONS
@@ -59,6 +61,9 @@ mongoose
   })
   .then(() => {
     app.listen(PORT, () => console.log(`Server port ${PORT} is connected `));
+    //This Query Works Once You have to comment Once you added!
+    // User.insertMany(users);
+    // Post.insertMany(posts);
   })
   .catch((error) =>
     console.log(`You have an error : ${error} can not connect!`)
